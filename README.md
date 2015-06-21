@@ -58,7 +58,7 @@ Stop
 
 $cd /var/www/sinopia
 
-$sudo ./sinopia.sh stort
+$sudo ./sinopia.sh stopt
 
 
 ```
