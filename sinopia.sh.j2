@@ -1,0 +1,30 @@
+#!/bin/bash
+
+function stopexistingservice {
+    ps -ef | grep sinopia | grep -v sinopia.sh | awk '{print $2}' | xargs kill
+}
+
+function stopservice {
+    echo "Stoping sinopia"
+    stopexistingservice
+}
+
+function startservice {
+    echo "Starting sinopia"
+    su - sinopia -c "cd {{sinopia_folder}}; sinopia > sinopia.out &"
+}
+
+
+if [ "$#" -ne 1 ]; then
+        echo "Illegal number of parameters"
+        echo "Please user ./sinopia.sh start OR ./sinopia.sh stop"
+fi
+
+if [ "$1" == "start" ]; then
+    stopexistingservice
+    startservice
+elif [ "$1" == "stop" ]; then
+    stopservice
+else
+    echo "Wrong Parameter"
+fi

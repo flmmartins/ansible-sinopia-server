@@ -1,0 +1,77 @@
+---
+- hosts: all
+  sudo: yes
+
+  vars:
+    sinopia_user: sinopia
+    www_folder: /var/www
+    sinopia_folder: "{{www_folder}}/sinopia"
+
+
+  tasks: 
+    - debug: msg="This will upgrade your NODE to a stable version!"
+
+    - name: Install required packages for sinopia
+      apt: pkg={{ item }} update_cache=yes state=present force=yes 
+      with_items:
+        - nodejs
+        - npm
+        - wget
+        - zip
+        - vim
+
+    - name: Create sinopia user
+      user: name={{sinopia_user}}
+
+    - name: Creating www_folder dir
+      file: path={{www_folder}} state=directory
+
+    - name: Creating sinopia_folder dir
+      file: path={{sinopia_folder}}
+            state=directory
+            owner={{sinopia_user}}
+            group={{sinopia_user}}
+
+    - name: Clean NPM cache
+      command: npm cache clean -f
+
+    - name: Double check node
+      npm: name=n global=yes state=latest
+
+    - name: Checking latest stable
+      command: n stable
+
+    - name: install sinopia
+      npm: name=sinopia global=yes state=present
+
+    - name: Copy config file
+      copy: src=config.yaml dest={{sinopia_folder}}
+
+    - name: Copy sinopia start stop script
+      template: src=sinopia.sh.j2
+                dest={{sinopia_folder}}/sinopia.sh
+                mode=0744
+
+    - name: Change sinopia folder permissions
+      file: path={{sinopia_folder}}
+            state=directory
+            recurse=yes
+            owner={{sinopia_user}}
+            group={{sinopia_user}}
+
+    - name: start sinopia for the first time to create db
+      command: bash -lc "sinopia > {{sinopia_folder}}/sinopia_firt_run_log &"
+               chdir={{sinopia_folder}}
+      sudo_user: "{{sinopia_user}}"
+
+    - name: Add sinopia to cron.d to start every reboot
+      cron: name="start sinopia on reboot"
+            special_time=reboot
+            job="{{sinopia_folder}}/sinopia.sh start"
+            user=root
+            cron_file=sinopia
+            state=present
+
+    - name: Start sinopia
+      command: bash -lc "./sinopia.sh start"
+               chdir={{sinopia_folder}}
