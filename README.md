@@ -1,6 +1,6 @@
 # Ansible Playbook for Sinopia
 
-An ansible playbook to build ghost blog
+An ansible playbook to build sinopia server
 
 **Important**: This script will update your nodejs to a stable version
 
