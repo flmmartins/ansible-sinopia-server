@@ -6,7 +6,6 @@ An ansible playbook to build sinopia server
 
 ### How to run the installation
 
-
 #### In another machine
 
 Install ansible in your machine and clone this repository.
@@ -22,22 +21,6 @@ ansible-playbook -i inventory playbook.yml -u <machine-user> -kK
 ```bash
 vagrant up
 ```
-
-### Packages installed by Ansible
-* Nodejs (latest stable)
-* Npm
-* Wget
-* zip
-* vim
-
-### Configurations made by Ansible
-
-* Instalation directory: /var/www/sinopia
-* URL: http://localhost:4873/
-* Create user called sinopia in the server
-* Install sinopia with a non-restriction config file which means that everyone will be able to pubilsh and read packages
-* Creates a sinopia.sh script to start and stop the server
-* Add sinopia.sh to cron so it can start sinopia on every reboot
 
 ### How to publish packages
 
@@ -58,6 +41,22 @@ This settings will be saved in your ~/.npmrc now it's only a matter to run:
 ```bash
 $npm publish
 ```
+
+### Packages installed by Ansible
+* Nodejs (latest stable)
+* Npm
+* Wget
+* zip
+* vim
+
+### Configurations made by Ansible
+
+* Instalation directory: /var/www/sinopia
+* URL: http://localhost:4873/
+* Create user called sinopia in the server
+* Install sinopia with a non-restriction config file which means that everyone will be able to pubilsh and read packages
+* Creates a sinopia.sh script to start and stop the server
+* Add sinopia.sh to cron so it can start sinopia on every reboot
 
 
 ### Run sinopia manually in the server
