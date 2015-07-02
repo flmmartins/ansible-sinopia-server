@@ -20,6 +20,17 @@ An ansible playbook to build ghost blog
 * Creates a sinopia.sh script to start and stop the server
 * Add sinopia.sh to cron so it can start sinopia on every reboot
 
+
+### How to run the installation
+
+Install ansible in your machine and clone this repository.
+Edit the inventory file with the host's ips you want to run sinopia on
+Run:
+
+```bash
+ansible-playbook -i inventory playbook.yml -u <machine-user> -kK
+```
+
 ### How to publish
 
 Run this in your machine:
@@ -58,7 +69,7 @@ Stop
 
 $cd /var/www/sinopia
 
-$sudo ./sinopia.sh stort
+$sudo ./sinopia.sh stop
 
 
 ```
